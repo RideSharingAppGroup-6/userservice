@@ -11,10 +11,6 @@ public class HealthCheckController {
 
     @GetMapping("/health")
     public ResponseEntity<String> getHealthCheckResponse(){
-        try{
             return new ResponseEntity<>("User Service is up and running", HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>("User Service is down", HttpStatus.GATEWAY_TIMEOUT);
-        }
     }
 }
