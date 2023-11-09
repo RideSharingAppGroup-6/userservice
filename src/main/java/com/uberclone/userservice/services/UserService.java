@@ -4,7 +4,6 @@ import com.uberclone.userservice.dtos.UserResponseDTO;
 import com.uberclone.userservice.dtos.UserUpdateDTO;
 import com.uberclone.userservice.exceptions.UserNotFoundException;
 import com.uberclone.userservice.models.User;
-import com.uberclone.userservice.repositories.SessionRepository;
 import com.uberclone.userservice.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class UserService {
         user.setName(userOptional.get().getName());
         user.setEmail(userOptional.get().getEmail());
         user.setPhoneNo(userOptional.get().getPhoneNo());
-        user.setUserType(userOptional.get().getUserType());
+        user.setUserRole(userOptional.get().getUserRole());
 
         return user;
     }
@@ -37,7 +36,7 @@ public class UserService {
         if(userOptional.isEmpty()) throw new UserNotFoundException("User with id "+userId+" does not exist");
         User user = userOptional.get();
         if(requestDTO.getName()!=null) user.setName(requestDTO.getName());
-        if(requestDTO.getUserType()!=null) user.setUserType(requestDTO.getUserType());
+        if(requestDTO.getUserRole()!=null) user.setUserRole(requestDTO.getUserRole());
         if(requestDTO.getPassword()!=null) user.setPassword(bCryptPasswordEncoder.encode(requestDTO.getPassword()));
         if(requestDTO.getEmail()!=null) user.setEmail(requestDTO.getEmail());
         if(requestDTO.getPhoneNo()!=null) user.setPhoneNo(requestDTO.getPhoneNo());
@@ -46,7 +45,7 @@ public class UserService {
         responseDTO.setName(savedUser.getName());
         responseDTO.setEmail(savedUser.getEmail());
         responseDTO.setPhoneNo(savedUser.getPhoneNo());
-        responseDTO.setUserType(savedUser.getUserType());
+        responseDTO.setUserRole(savedUser.getUserRole());
         return responseDTO;
     }
 }

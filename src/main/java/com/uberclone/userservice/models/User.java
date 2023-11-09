@@ -16,6 +16,6 @@ public class User extends BaseModel{
     private String phoneNo;
     @Column(nullable = false)
     private String password;
-    @Enumerated(EnumType.ORDINAL)
-    private UserType userType;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
 }

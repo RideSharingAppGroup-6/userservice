@@ -1,6 +1,6 @@
 package com.uberclone.userservice.dtos;
 
-import com.uberclone.userservice.models.UserType;
+import com.uberclone.userservice.models.UserRole;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +10,6 @@ public class UserUpdateDTO {
     private String name;
     private String email;
     private String phoneNo;
-    private UserType userType;
+    private UserRole userRole;
     private String password;
 }
