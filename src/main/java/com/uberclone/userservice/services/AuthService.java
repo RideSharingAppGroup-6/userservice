@@ -29,19 +29,12 @@ import java.util.Optional;
 
 @Service
 public class AuthService {
-    @Value("${auth.token.expiry.days}")
-    private int tokenExpiry;
-
-    @Value(("${auth.secret.key}"))
-    private String secretKey;
-//    private final MacAlgorithm macAlgorithm = Jwts.SIG.HS256;
-//    private final SecretKey secretKey = macAlgorithm.key().build();
     private UserRepository userRepository;
     private SessionRepository sessionRepository;
     private PasswordEncoder passwordEncoder;
 
     public AuthService(UserRepository userRepository, SessionRepository sessionRepository,
-                       PasswordEncoder passwordEncoder, JwtService jwtService){
+                       PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
         this.passwordEncoder = passwordEncoder;
@@ -59,27 +52,6 @@ public class AuthService {
         return savedUser.getId();
     }
 
-//    public String login(String email, String phoneNo, String password) throws InvalidCredentialsException {
-//        if(email!=null){
-//            Optional<User> userOptional = userRepository.findByEmail(email);
-//            if(userOptional.isEmpty()) throw new InvalidCredentialsException("Invalid Email");
-//            if(bCryptPasswordEncoder.matches(password, userOptional.get().getPassword())){
-//                return generateToken(userOptional.get());
-//            }else{
-//                throw new InvalidParameterException("Invalid Password");
-//            }
-//
-//        } else if (phoneNo!=null) {
-//            Optional<User> userOptional = userRepository.findByPhoneNo(phoneNo);
-//            if(userOptional.isEmpty()) throw new InvalidCredentialsException("Invalid Phone no");
-//            if(bCryptPasswordEncoder.matches(password, userOptional.get().getPassword())){
-//                return generateToken(userOptional.get());
-//            }else{
-//                throw new InvalidCredentialsException("Invalid Password");
-//            }
-//        }
-//        return null;
-//    }
     public void logOut(Long userId, String token) throws SessionNotFoundException {
         Optional<Session> sessionOptional = sessionRepository.findByTokenAndUser_Id(token, userId);
         if(sessionOptional.isEmpty() || !sessionOptional.get().getSessionStatus().equals(SessionStatus.ACTIVE)){

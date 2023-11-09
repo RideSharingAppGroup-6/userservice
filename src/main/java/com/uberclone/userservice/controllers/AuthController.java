@@ -71,7 +71,7 @@ public class AuthController {
     public ResponseEntity<String> logOut(@RequestBody LogoutRequestDTO requestDTO){
         try{
             authService.logOut(requestDTO.getUserId(), requestDTO.getToken());
-            return new ResponseEntity<>("Logged out successful", HttpStatus.OK);
+            return new ResponseEntity<>("Logged out successfully", HttpStatus.OK);
         }catch (SessionNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

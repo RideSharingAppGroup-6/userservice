@@ -30,7 +30,13 @@ public class JwtService {
     private SessionRepository sessionRepository;
 
     @Value("${auth.token.expiry.days}")
-    private int tokenExpiry;
+    private int tokenExpiryDays;
+
+    @Value("${auth.token.expiry.hours}")
+    private int tokenExpiryHours;
+
+    @Value("${auth.token.expiry.minutes}")
+    private int tokenExpiryMinutes;
 
     @Value(("${auth.secret.key}"))
     private String secretKey;
@@ -72,7 +78,7 @@ public class JwtService {
         Session session = sessionOptional.get();
         if(session.getSessionStatus().equals(SessionStatus.EXPIRED)) return false;
         Boolean status = isTokenExpired(token);
-        if(status){
+        if(!status){
             session.setSessionStatus(SessionStatus.EXPIRED);
             sessionRepository.save(session);
         }
@@ -89,6 +95,7 @@ public class JwtService {
         claims.put("id", user.getId());
         claims.put("name", user.getName());
         claims.put("phoneNo", user.getPhoneNo());
+        claims.put("role", user.getUserRole());
         String token = createToken(claims,user.getEmail());
         Session session = new Session();
         session.setUser(user);
@@ -103,7 +110,8 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+ 1000L *60*60*24*tokenExpiry))
+                .setExpiration(new Date(System.currentTimeMillis()+ 1000L*60*60*24*tokenExpiryDays +
+                        1000L*60*60*tokenExpiryHours + 1000L*60*tokenExpiryMinutes))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 

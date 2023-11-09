@@ -10,6 +10,6 @@ public class UserUpdateDTO {
     private String name;
     private String email;
     private String phoneNo;
-    private UserRole userRole;
+//    private UserRole userRole;
     private String password;
 }
